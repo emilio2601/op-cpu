@@ -1,4 +1,5 @@
 import struct
+import sys
 
 class CPU():
 	def __init__(self, memory=1048576):
@@ -77,8 +78,30 @@ class CPU():
 			else:
 				self.ip += 11
 			return
-		
+
+		if opcode == 6:
+			"""
+			outb(register, int)
+			Outputs int number of bytes from register, starting from the LSB
+			"""
+			n = big_endian_to_int(self.memory[self.ip+2:self.ip+10])
+			sys.stdout.write(int_to_big_endian(self.registers[self.memory[self.ip+1]])[-n:].decode("utf-8"))
+			self.ip += 10
+			return
+
+		if opcode == 7:
+			"""
+			outn(register)
+			Outputs the value of register as a base 10 number
+			"""
+			sys.stdout.write(str(self.registers[self.memory[self.ip+1]]))
+			self.ip += 2
+			return
+
 		raise Exception("Invalid opcode")
 
 def big_endian_to_int(val):
 	return struct.unpack(">Q", val)[0]
+
+def int_to_big_endian(val):
+	return struct.pack(">Q", val)

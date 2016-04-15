@@ -24,7 +24,7 @@ def main():
 
 	print("time elapsed: {:.6f} instructions executed: {}".format(taken, instr))
 	print("ips: {:.0f}".format(ips))
-	print("exiting with error code {}".format(cpu.err))
+	sys.exit(cpu.err)
 
 
 if __name__ == '__main__':

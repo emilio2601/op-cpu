@@ -22,8 +22,9 @@ def main():
 	taken = time.time() - start
 	ips = instr / taken
 
-	print("Executed {} instructions in {:.4f} seconds".format(instr, taken))
+	print("time elapsed: {:.6f} instructions executed: {}".format(taken, instr))
 	print("ips: {:.0f}".format(ips))
+	print("exiting with error code {}".format(cpu.err))
 
 
 if __name__ == '__main__':

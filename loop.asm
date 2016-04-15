@@ -1,4 +1,4 @@
-cpy r10 4096
+cpy r10 1048576
 
 :loop
 inc r5

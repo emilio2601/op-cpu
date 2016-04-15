@@ -17,6 +17,7 @@ class CPU():
 	def next_instruction(self):
 		if self.registers[0] != 0:
 			self.exit = True
+			self.err = self.registers[0]
 
 		opcode = self.memory[self.ip]
 
@@ -26,7 +27,7 @@ class CPU():
 			Stop execution and exit with error code in register
 			"""
 
-			self.registers[0] = self.registers[self.memory[self.ip+1]] + 1
+			self.registers[0] = self.registers[self.memory[self.ip+1]]
 			return
 
 		if opcode == 1:
@@ -49,20 +50,32 @@ class CPU():
 			return
 
 		if opcode == 3:
+			"""
+			inc(register)
+			Increment value on register by one
+			"""
 			self.registers[self.memory[self.ip+1]] = self.registers[self.memory[self.ip+1]] + 1
 			self.ip += 2
 			return
 
 		if opcode == 4:
+			"""
+			mov(register, register)
+			Moves value in first register to second register
+			"""
 			self.registers[self.memory[self.ip+2]] = self.registers[self.memory[self.ip+1]]
 			self.ip += 3
 			return
 
 		if opcode == 5:
+			"""
+			jmp(register, register, int)
+			If the values in the first two registers are equal, jump to address in third operand
+			"""
 			if(self.registers[self.memory[self.ip+1]] == self.registers[self.memory[self.ip+2]]):
-				self.ip = self.memory[self.ip+3];
+				self.ip = big_endian_to_int(self.memory[self.ip+3:self.ip+11])
 			else:
-				self.ip += 4
+				self.ip += 11
 			return
 		
 		raise Exception("Invalid opcode")

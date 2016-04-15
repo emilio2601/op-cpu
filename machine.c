@@ -75,9 +75,22 @@ uint8_t machine_loop(uint8_t* memory, uint64_t* registers){
 			
 		} else if(opcode == 5){ //jmp: jump if equal
 			if(registers[memory[ip+1]] == registers[memory[ip+2]]){
-				ip = memory[ip+3];
+				uint8_t  in[8];
+				uint64_t out;
+
+				in[0] = memory[ip+10];
+				in[1] = memory[ip+9];
+				in[2] = memory[ip+8];
+				in[3] = memory[ip+7];
+				in[4] = memory[ip+6];
+				in[5] = memory[ip+5];
+				in[6] = memory[ip+4];
+				in[7] = memory[ip+3];
+
+				memcpy(&out, &in, 8);
+				ip = out;
 			} else {
-				ip = ip + 4;
+				ip = ip + 11;
 			}
 		}
 

@@ -29,7 +29,7 @@ class Instruction(object):
 				elif self.instruction == "mov":
 					self.width = 3
 				elif self.instruction == "jmp":
-					self.width = 4
+					self.width = 11
 			
 		def __repr__(self):
 			if self.label: 		return "<Label {}>".format(self.label)
@@ -79,7 +79,8 @@ class Instruction(object):
 					for lookup_label in table:
 						if lookup_label[0] == label:
 							addr = lookup_label[1]
-					self.bytecode = struct.pack("BBBB", opcode, reg_one, reg_two, addr)
+					self.bytecode = struct.pack("BBB", opcode, reg_one, reg_two)
+					self.bytecode += struct.pack(">Q", addr)
 
 		def str_to_reg(self, string):
 			if not string.startswith("r"):
